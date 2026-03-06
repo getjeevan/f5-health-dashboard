@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  f5-dashboard:
+    build: .
+    container_name: f5-health-dashboard
+    ports:
+      - "1025:1025"
+    environment:
+      - NODE_ENV=production
+      - PORT=1025
+      - F5_HOST=${F5_HOST:-10.1.1.5}
+      - F5_PORT=${F5_PORT:-443}
+      - F5_USERNAME=${F5_USERNAME:-admin}
+      - F5_PASSWORD=${F5_PASSWORD}
+      - F5_VERIFY_TLS=${F5_VERIFY_TLS:-false}
+      - F5_PARTITION=${F5_PARTITION:-Common}
+      - F5_POLLING_INTERVAL=${F5_POLLING_INTERVAL:-10}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1025/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

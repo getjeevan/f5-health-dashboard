@@ -1,0 +1,6 @@
+node_modules
+dist
+.git
+.replit
+.env
+attached_assets
